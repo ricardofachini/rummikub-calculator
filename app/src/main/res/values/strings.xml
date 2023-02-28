@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Rummikub Calculator</string>
+    <string name="new_match">Nova partida</string>
 </resources>
