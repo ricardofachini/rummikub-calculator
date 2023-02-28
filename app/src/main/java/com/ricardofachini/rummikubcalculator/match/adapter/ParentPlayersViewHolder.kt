@@ -18,7 +18,7 @@ class ParentPlayersViewHolder(
             playerTitle.text = item.name
             childRecyclerview.adapter = childAdapter
             childRecyclerview.layoutManager = childLayoutManager
-            childAdapter.submitList(item.points)
         }
+        childAdapter.submitList(item.points)
     }
 }

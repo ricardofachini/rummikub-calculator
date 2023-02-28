@@ -4,10 +4,12 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
+import androidx.recyclerview.widget.RecyclerView
 import com.ricardofachini.rummikubcalculator.databinding.ItemRowPlayersBinding
 import com.ricardofachini.rummikubcalculator.domain.model.Player
 
 class ParentPlayersAdapter: ListAdapter<Player, ParentPlayersViewHolder>(ParentPlayersAdapter) {
+    private val viewPool = RecyclerView.RecycledViewPool()
 
     override fun onCreateViewHolder(parent: ViewGroup,viewType: Int): ParentPlayersViewHolder {
         val binding = ItemRowPlayersBinding.inflate(
@@ -15,6 +17,7 @@ class ParentPlayersAdapter: ListAdapter<Player, ParentPlayersViewHolder>(ParentP
             parent,
             false
         )
+        binding.childRecyclerview.setRecycledViewPool(viewPool)
         return ParentPlayersViewHolder(binding)
     }
 
@@ -22,10 +25,6 @@ class ParentPlayersAdapter: ListAdapter<Player, ParentPlayersViewHolder>(ParentP
         val item = getItem(position)
         println("item do parent viewholder: $item")
         holder.bind(item)
-    }
-
-    fun addData(pointsList: List<Int>) {
-        
     }
 
     companion object TodoDiffCallback: DiffUtil.ItemCallback<Player>() {
