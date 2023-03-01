@@ -11,8 +11,8 @@ class MatchViewModel @Inject constructor():
 
     private val lista = mutableListOf(
         Player(0, "nome1", listOf(1, 2, 3)),
-        Player(1, "nome2", listOf(15, 25, 35)),
-        Player(2, "nome1", listOf(12, 22, 31))
+        Player(1, "nome2", listOf(-15, 25, 35)),
+        Player(2, "nome1", listOf(12, 22, -31))
     )
 
     fun getList(): List<Player> {
