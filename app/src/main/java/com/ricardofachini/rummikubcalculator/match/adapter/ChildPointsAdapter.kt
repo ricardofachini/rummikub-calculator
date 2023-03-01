@@ -17,7 +17,6 @@ class ChildPointsAdapter: ListAdapter<Int, ChildPointsViewHolder>(ChildPointsAda
 
     override fun onBindViewHolder(holder: ChildPointsViewHolder,position: Int) {
         val item = getItem(position)
-        println("ITEM do childadapter getItemId: $item")
         holder.bind(item)
     }
 

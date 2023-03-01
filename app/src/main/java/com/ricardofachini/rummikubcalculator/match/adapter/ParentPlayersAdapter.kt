@@ -23,7 +23,6 @@ class ParentPlayersAdapter: ListAdapter<Player, ParentPlayersViewHolder>(ParentP
 
     override fun onBindViewHolder(holder: ParentPlayersViewHolder,position: Int) {
         val item = getItem(position)
-        println("item do parent viewholder: $item")
         holder.bind(item)
     }
 
