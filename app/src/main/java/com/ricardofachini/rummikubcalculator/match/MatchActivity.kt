@@ -10,10 +10,11 @@ import com.ricardofachini.rummikubcalculator.R
 import com.ricardofachini.rummikubcalculator.databinding.ActivityMatchBinding
 import com.ricardofachini.rummikubcalculator.match.adapter.ChildPointsAdapter
 import com.ricardofachini.rummikubcalculator.match.adapter.ParentPlayersAdapter
+import com.ricardofachini.rummikubcalculator.match.adapter.ParentPlayersViewHolder
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class MatchActivity: AppCompatActivity(), AddPointsDialogListener {
+class MatchActivity: AppCompatActivity(), AddPointsDialogListener, ParentPlayersViewHolder.OnButtonClickListener {
     private lateinit var binding: ActivityMatchBinding
     private lateinit var childPointsAdapter: ChildPointsAdapter
     private lateinit var parentPlayersAdapter: ParentPlayersAdapter
@@ -49,6 +50,17 @@ class MatchActivity: AppCompatActivity(), AddPointsDialogListener {
 
     override fun onAddPointsDialogPositiveClick(points: Int) {
         TODO("Not yet implemented")
+    }
+
+    override fun onButtonClick(playerId: Int) {
+        val name = viewModel.getPlayerFromId(playerId).name
+        val fragment = AddPointsDialogFragment()
+        val playerIdArgs = Bundle().apply {
+            putString("player_name", name)
+        }
+
+        fragment.arguments = playerIdArgs
+        fragment.show(supportFragmentManager, "TAG")
     }
 
     private fun setupView() {
