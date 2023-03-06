@@ -4,28 +4,30 @@ import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
-import android.widget.EditText
 import androidx.fragment.app.DialogFragment
-import com.ricardofachini.rummikubcalculator.R
+import com.ricardofachini.rummikubcalculator.databinding.FragmentAddPointsDialogBinding
 
 class AddPointsDialogFragment: DialogFragment() {
     private lateinit var listener: AddPointsDialogListener
+    private lateinit var binding: FragmentAddPointsDialogBinding
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
+        try {
+            listener = context as AddPointsDialogListener
+        } catch (error: ClassCastException) {
+            throw ClassCastException("Activity must implement ${AddPointsDialogListener::class}")
+        }
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return activity?.let {
             val builder = AlertDialog.Builder(it)
-            val inflater = requireActivity().layoutInflater
+            binding = FragmentAddPointsDialogBinding.inflate(layoutInflater)
 
-            val addPointsView = inflater.inflate(R.layout.fragment_add_points_dialog, null)
-            val pointsInput = addPointsView.findViewById<EditText>(R.id.addPointsInput)
-
-            builder.setView(addPointsView)
+            builder.setView(binding.root)
                 .setPositiveButton("Adicionar") { _,_ ->
-                    val points = pointsInput.text.toString()
+                    val points = binding.addPointsInput.text.toString()
                     listener.onAddPointsDialogPositiveClick(points.toInt())
                 }
                 .setNegativeButton("Cancelar") { _,_ ->
