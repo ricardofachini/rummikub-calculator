@@ -13,7 +13,7 @@ import com.ricardofachini.rummikubcalculator.match.adapter.ParentPlayersAdapter
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class MatchActivity: AppCompatActivity() {
+class MatchActivity: AppCompatActivity(), AddPointsDialogListener {
     private lateinit var binding: ActivityMatchBinding
     private lateinit var childPointsAdapter: ChildPointsAdapter
     private lateinit var parentPlayersAdapter: ParentPlayersAdapter
@@ -45,6 +45,10 @@ class MatchActivity: AppCompatActivity() {
                 super.onOptionsItemSelected(item)
             }
         }
+    }
+
+    override fun onAddPointsDialogPositiveClick(points: Int) {
+        TODO("Not yet implemented")
     }
 
     private fun setupView() {
