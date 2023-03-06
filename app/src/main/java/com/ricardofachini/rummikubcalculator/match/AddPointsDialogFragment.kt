@@ -25,6 +25,9 @@ class AddPointsDialogFragment: DialogFragment() {
             val builder = AlertDialog.Builder(it)
             binding = FragmentAddPointsDialogBinding.inflate(layoutInflater)
 
+            val data = arguments?.getString("player_name")
+            binding.addPointsDialogTitle.text = "Adicionar pontos para " + data
+
             builder.setView(binding.root)
                 .setPositiveButton("Adicionar") { _,_ ->
                     val points = binding.addPointsInput.text.toString()
