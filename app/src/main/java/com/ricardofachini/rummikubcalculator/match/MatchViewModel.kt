@@ -18,4 +18,8 @@ class MatchViewModel @Inject constructor():
     fun getList(): List<Player> {
         return lista
     }
+
+    fun getPlayerFromId(playerId: Int): Player {
+        return lista[playerId]
+    }
 }
