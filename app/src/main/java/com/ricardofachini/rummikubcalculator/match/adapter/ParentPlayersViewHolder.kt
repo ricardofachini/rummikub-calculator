@@ -18,6 +18,9 @@ class ParentPlayersViewHolder(
             playerTitle.text = item.name
             childRecyclerview.adapter = childAdapter
             childRecyclerview.layoutManager = childLayoutManager
+            insertPointsButton.setOnClickListener {
+                // ADD THE PUNCTUATION
+            }
         }
         childAdapter.submitList(item.points)
     }
