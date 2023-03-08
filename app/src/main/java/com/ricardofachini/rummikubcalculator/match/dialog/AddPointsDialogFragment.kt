@@ -1,4 +1,4 @@
-package com.ricardofachini.rummikubcalculator.match
+package com.ricardofachini.rummikubcalculator.match.dialog
 
 import android.app.AlertDialog
 import android.app.Dialog
@@ -25,13 +25,13 @@ class AddPointsDialogFragment: DialogFragment() {
             val builder = AlertDialog.Builder(it)
             binding = FragmentAddPointsDialogBinding.inflate(layoutInflater)
 
-            val data = arguments?.getString("player_name")
-            binding.addPointsDialogTitle.text = "Adicionar pontos para " + data
+            val playerOnClickName = arguments?.getString("player_name")
+            binding.addPointsDialogTitle.text = "Adicionar pontos para " + playerOnClickName
 
             builder.setView(binding.root)
                 .setPositiveButton("Adicionar") { _,_ ->
                     val points = binding.addPointsInput.text.toString()
-                    listener.onAddPointsDialogPositiveClick(points.toInt())
+                    listener.onAddPointsDialogPositiveClick(points.toInt(), arguments?.getInt("player_id"))
                 }
                 .setNegativeButton("Cancelar") { _,_ ->
                     dialog?.cancel()

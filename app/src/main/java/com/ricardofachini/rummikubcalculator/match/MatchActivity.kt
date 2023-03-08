@@ -11,10 +11,12 @@ import com.ricardofachini.rummikubcalculator.databinding.ActivityMatchBinding
 import com.ricardofachini.rummikubcalculator.match.adapter.ChildPointsAdapter
 import com.ricardofachini.rummikubcalculator.match.adapter.ParentPlayersAdapter
 import com.ricardofachini.rummikubcalculator.match.adapter.ParentPlayersViewHolder
+import com.ricardofachini.rummikubcalculator.match.dialog.AddPointsDialogFragment
+import com.ricardofachini.rummikubcalculator.match.dialog.AddPointsDialogListener
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class MatchActivity: AppCompatActivity(), AddPointsDialogListener, ParentPlayersViewHolder.OnButtonClickListener {
+class MatchActivity: AppCompatActivity(),AddPointsDialogListener, ParentPlayersViewHolder.OnButtonClickListener {
     private lateinit var binding: ActivityMatchBinding
     private lateinit var childPointsAdapter: ChildPointsAdapter
     private lateinit var parentPlayersAdapter: ParentPlayersAdapter
@@ -25,6 +27,7 @@ class MatchActivity: AppCompatActivity(), AddPointsDialogListener, ParentPlayers
         binding = ActivityMatchBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setupView()
+        viewModel.getList()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -48,8 +51,10 @@ class MatchActivity: AppCompatActivity(), AddPointsDialogListener, ParentPlayers
         }
     }
 
-    override fun onAddPointsDialogPositiveClick(points: Int) {
-        TODO("Not yet implemented")
+    override fun onAddPointsDialogPositiveClick(points: Int, id: Int?) {
+        if (id != null) {
+            parentPlayersAdapter.submitList(viewModel.addPoints(points, id)) //USAR algum observable - ESTA ERRADO
+        }
     }
 
     override fun onButtonClick(playerId: Int) {
@@ -57,6 +62,7 @@ class MatchActivity: AppCompatActivity(), AddPointsDialogListener, ParentPlayers
         val fragment = AddPointsDialogFragment()
         val playerIdArgs = Bundle().apply {
             putString("player_name", name)
+            putInt("player_id", playerId)
         }
 
         fragment.arguments = playerIdArgs
