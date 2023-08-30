@@ -54,6 +54,7 @@ class MatchActivity: AppCompatActivity(),AddPointsDialogListener, ParentPlayersV
     override fun onAddPointsDialogPositiveClick(points: Int, id: Int?) {
         if (id != null) {
             parentPlayersAdapter.submitList(viewModel.addPoints(points, id)) //USAR algum observable - ESTA ERRADO
+            parentPlayersAdapter.notifyItemChanged(id)
         }
     }
 

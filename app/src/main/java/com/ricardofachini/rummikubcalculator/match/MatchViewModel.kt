@@ -9,7 +9,7 @@ import javax.inject.Inject
 class MatchViewModel @Inject constructor():
     ViewModel() {
 
-    val lista = mutableListOf(
+    private val lista = mutableListOf(
         Player(0, "nome1", mutableListOf(1, 2, 3)),
         Player(1, "nome2", mutableListOf(-15, 25, 35)),
         Player(2, "nome1", mutableListOf(12, 22, -31))
