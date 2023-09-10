@@ -13,6 +13,9 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object AppModule {
+    /*
+    Dagger hilt main module that provides repositories for the viewmodels
+     */
 
     @Provides
     @Singleton
