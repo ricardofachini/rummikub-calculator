@@ -4,5 +4,7 @@ import com.ricardofachini.rummikubcalculator.domain.model.Player
 
 interface PlayerLocalRepositoryInterface {
 
-    fun getAllPlayers(): List<Player>
+    suspend fun getAllPlayers(): List<Player>
+
+    suspend fun addPlayer(player: Player): Boolean
 }

@@ -11,12 +11,14 @@ import com.ricardofachini.rummikubcalculator.databinding.ActivityMatchBinding
 import com.ricardofachini.rummikubcalculator.match.adapter.ChildPointsAdapter
 import com.ricardofachini.rummikubcalculator.match.adapter.ParentPlayersAdapter
 import com.ricardofachini.rummikubcalculator.match.adapter.ParentPlayersViewHolder
+import com.ricardofachini.rummikubcalculator.match.dialog.AddPlayerDialogFragment
+import com.ricardofachini.rummikubcalculator.match.dialog.AddPlayerDialogListener
 import com.ricardofachini.rummikubcalculator.match.dialog.AddPointsDialogFragment
 import com.ricardofachini.rummikubcalculator.match.dialog.AddPointsDialogListener
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class MatchActivity: AppCompatActivity(),AddPointsDialogListener, ParentPlayersViewHolder.OnButtonClickListener {
+class MatchActivity: AppCompatActivity(),AddPointsDialogListener, AddPlayerDialogListener, ParentPlayersViewHolder.OnButtonClickListener {
     private lateinit var binding: ActivityMatchBinding
     private lateinit var childPointsAdapter: ChildPointsAdapter
     private lateinit var parentPlayersAdapter: ParentPlayersAdapter
@@ -45,6 +47,11 @@ class MatchActivity: AppCompatActivity(),AddPointsDialogListener, ParentPlayersV
                 //TERMINA A PARTIDA, SALVANDO COMO ESTÁ AGORA
                 true
             }
+            R.id.add_player -> {
+                val fragment = AddPlayerDialogFragment()
+                fragment.show(supportFragmentManager, "TAG")
+                true
+            }
             else -> {
                 super.onOptionsItemSelected(item)
             }
@@ -58,6 +65,9 @@ class MatchActivity: AppCompatActivity(),AddPointsDialogListener, ParentPlayersV
         }
     }
 
+    /*
+    Usuário clica no botão para adicionar pontos para determinado player
+     */
     override fun onButtonClick(playerId: Int) {
         val name = viewModel.getPlayerFromId(playerId).name
         val fragment = AddPointsDialogFragment()
@@ -78,5 +88,10 @@ class MatchActivity: AppCompatActivity(),AddPointsDialogListener, ParentPlayersV
         binding.playersList.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
 
         parentPlayersAdapter.submitList(viewModel.getList())
+    }
+
+    override fun addPlayerNameToCurrentMatch(name: String) {
+        viewModel.addNewPlayer(name)
+        parentPlayersAdapter.notifyItemChanged(-1)
     }
 }

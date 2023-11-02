@@ -1,12 +1,17 @@
 package com.ricardofachini.rummikubcalculator.match
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.ricardofachini.rummikubcalculator.domain.model.Player
+import com.ricardofachini.rummikubcalculator.domain.usecase.AddPlayerUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class MatchViewModel @Inject constructor():
+class MatchViewModel @Inject constructor(
+    private val addPlayerUseCase: AddPlayerUseCase,
+):
     ViewModel() {
 
     private val lista = mutableListOf(
@@ -27,6 +32,21 @@ class MatchViewModel @Inject constructor():
         lista[playerId].points.add(points)
         println("lista: $lista")
         return lista
+    }
+
+    fun addNewPlayer(name: String) {
+        val player = Player(
+            id = 0,
+            name = name,
+            mutableListOf()
+        )
+        //lista.add(player)
+        viewModelScope.launch {
+            val result = addPlayerUseCase.addPlayerToLocalDomain(player)
+            if (!result) {
+                println("erro ao adicionar novo Player")
+            }
+        }
     }
 
     fun observe() {

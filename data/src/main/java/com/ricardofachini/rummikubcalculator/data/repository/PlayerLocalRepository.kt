@@ -12,10 +12,14 @@ class PlayerLocalRepository @Inject constructor(
     private val database: AppDatabase
 ): PlayerLocalRepositoryInterface {
 
-    override fun getAllPlayers(): List<Player> {
+    override suspend fun getAllPlayers(): List<Player> {
         return database.playerDao().getAll().map {
             it.toDomain()
         }
+    }
+
+    override suspend fun addPlayer(player: Player): Boolean {
+        return database.playerDao().insertPlayer(player = player.toData())
     }
 
     private fun PlayerEntityLocal.toDomain(): Player {
