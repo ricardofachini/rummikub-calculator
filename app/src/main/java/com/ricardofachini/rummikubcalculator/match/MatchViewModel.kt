@@ -11,8 +11,7 @@ import javax.inject.Inject
 @HiltViewModel
 class MatchViewModel @Inject constructor(
     private val addPlayerUseCase: AddPlayerUseCase,
-):
-    ViewModel() {
+):  ViewModel() {
 
     private val lista = mutableListOf(
         Player(0, "nome1", mutableListOf(1, 2, 3)),
