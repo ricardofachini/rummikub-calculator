@@ -42,7 +42,7 @@ class MatchViewModel @Inject constructor(
         //lista.add(player)
         viewModelScope.launch {
             val result = addPlayerUseCase.addPlayerToLocalDomain(player)
-            if (!result) {
+            if (result == null) {
                 println("erro ao adicionar novo Player")
             }
         }

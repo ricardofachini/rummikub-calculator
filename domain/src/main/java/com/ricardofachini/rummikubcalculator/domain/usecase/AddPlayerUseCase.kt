@@ -6,7 +6,7 @@ import javax.inject.Inject
 
 class AddPlayerUseCase @Inject constructor(private val localRepositoryInterface: PlayerLocalRepositoryInterface) {
 
-    suspend fun addPlayerToLocalDomain(player: Player): Boolean {
+    suspend fun addPlayerToLocalDomain(player: Player): Long {
         return localRepositoryInterface.addPlayer(player)
     }
 }

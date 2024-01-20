@@ -18,7 +18,7 @@ class PlayerLocalRepository @Inject constructor(
         }
     }
 
-    override suspend fun addPlayer(player: Player): Boolean {
+    override suspend fun addPlayer(player: Player): Long {
         return database.playerDao().insertPlayer(player = player.toData())
     }
 

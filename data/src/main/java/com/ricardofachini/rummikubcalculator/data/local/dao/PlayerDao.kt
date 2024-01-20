@@ -13,5 +13,5 @@ interface PlayerDao {
     suspend fun getAll(): List<PlayerEntityLocal>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun insertPlayer(player: PlayerEntityLocal): Boolean
+    suspend fun insertPlayer(player: PlayerEntityLocal): Long
 }

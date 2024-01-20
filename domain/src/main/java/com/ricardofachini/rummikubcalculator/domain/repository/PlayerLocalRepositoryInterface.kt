@@ -6,5 +6,5 @@ interface PlayerLocalRepositoryInterface {
 
     suspend fun getAllPlayers(): List<Player>
 
-    suspend fun addPlayer(player: Player): Boolean
+    suspend fun addPlayer(player: Player): Long
 }
