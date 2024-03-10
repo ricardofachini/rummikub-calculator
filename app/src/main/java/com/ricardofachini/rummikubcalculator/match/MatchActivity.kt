@@ -5,9 +5,11 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ricardofachini.rummikubcalculator.R
 import com.ricardofachini.rummikubcalculator.databinding.ActivityMatchBinding
+import com.ricardofachini.rummikubcalculator.domain.model.Player
 import com.ricardofachini.rummikubcalculator.match.adapter.ChildPointsAdapter
 import com.ricardofachini.rummikubcalculator.match.adapter.ParentPlayersAdapter
 import com.ricardofachini.rummikubcalculator.match.adapter.ParentPlayersViewHolder
@@ -29,7 +31,7 @@ class MatchActivity: AppCompatActivity(),AddPointsDialogListener, AddPlayerDialo
         binding = ActivityMatchBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setupView()
-        viewModel.getList()
+        //viewModel.getList()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -60,16 +62,17 @@ class MatchActivity: AppCompatActivity(),AddPointsDialogListener, AddPlayerDialo
 
     override fun onAddPointsDialogPositiveClick(points: Int, id: Int?) {
         if (id != null) {
-            parentPlayersAdapter.submitList(viewModel.addPoints(points, id)) //USAR algum observable - ESTA ERRADO
-            parentPlayersAdapter.notifyItemChanged(id)
+            viewModel.updatePoints(points, id)
+            //parentPlayersAdapter.submitList(viewModel.updatePoints(points, id)) //USAR algum observable - ESTA ERRADO
+            //parentPlayersAdapter.notifyItemChanged(id)
         }
     }
 
-    /*
+    /**
     Usuário clica no botão para adicionar pontos para determinado player
      */
     override fun onButtonClick(playerId: Int) {
-        val name = viewModel.getPlayerFromId(playerId).name
+        val name = viewModel.getPlayerFromId(playerId)?.name
         val fragment = AddPointsDialogFragment()
         val playerIdArgs = Bundle().apply {
             putString("player_name", name)
@@ -87,11 +90,13 @@ class MatchActivity: AppCompatActivity(),AddPointsDialogListener, AddPlayerDialo
         binding.playersList.adapter = parentPlayersAdapter
         binding.playersList.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
 
-        parentPlayersAdapter.submitList(viewModel.getList())
+        viewModel.getList().observe(this, Observer { it ->
+            parentPlayersAdapter.submitList(it)
+        })
     }
 
     override fun addPlayerNameToCurrentMatch(name: String) {
         viewModel.addNewPlayer(name)
-        parentPlayersAdapter.notifyItemChanged(-1)
+        //parentPlayersAdapter.notifyItemChanged(-1)
     }
 }

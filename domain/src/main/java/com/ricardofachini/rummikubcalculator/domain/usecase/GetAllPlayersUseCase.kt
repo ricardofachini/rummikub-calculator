@@ -4,9 +4,9 @@ import com.ricardofachini.rummikubcalculator.domain.model.Player
 import com.ricardofachini.rummikubcalculator.domain.repository.PlayerLocalRepositoryInterface
 import javax.inject.Inject
 
-class AddPlayerUseCase @Inject constructor(private val localRepositoryInterface: PlayerLocalRepositoryInterface) {
+class GetAllPlayersUseCase @Inject constructor(private val localRepositoryInterface: PlayerLocalRepositoryInterface) {
 
-    suspend fun addPlayerToLocalDomain(player: Player): Boolean {
-        return localRepositoryInterface.addPlayer(player)
+    suspend fun getAllPlayersFromLocal(): List<Player> {
+        return localRepositoryInterface.getAllPlayers()
     }
 }

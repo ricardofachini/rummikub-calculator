@@ -18,8 +18,18 @@ class PlayerLocalRepository @Inject constructor(
         }
     }
 
-    override suspend fun addPlayer(player: Player): Long {
-        return database.playerDao().insertPlayer(player = player.toData())
+    override suspend fun updatePoints(playerID: Int, points: Int): Long {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun addPlayer(player: Player): Boolean {
+        return try {
+            database.playerDao().insertPlayer(player = player.toData())
+            true
+        } catch (error: Throwable) {
+            println("erro: $error")
+            false
+        }
     }
 
     private fun PlayerEntityLocal.toDomain(): Player {
