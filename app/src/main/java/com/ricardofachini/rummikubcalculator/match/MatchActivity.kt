@@ -30,6 +30,16 @@ class MatchActivity: AppCompatActivity(),AddPointsDialogListener, AddPlayerDialo
         super.onCreate(savedInstanceState)
         binding = ActivityMatchBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        childPointsAdapter = ChildPointsAdapter()
+        parentPlayersAdapter = ParentPlayersAdapter()
+
+        binding.playersList.adapter = parentPlayersAdapter
+        binding.playersList.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+
+        viewModel.getList()
+        viewModel.playersList.observe(this, Observer { data ->
+            parentPlayersAdapter.submitList(data)
+        })
         setupView()
         //viewModel.getList()
     }
@@ -84,15 +94,16 @@ class MatchActivity: AppCompatActivity(),AddPointsDialogListener, AddPlayerDialo
     }
 
     private fun setupView() {
-        childPointsAdapter = ChildPointsAdapter()
-        parentPlayersAdapter = ParentPlayersAdapter()
-
-        binding.playersList.adapter = parentPlayersAdapter
-        binding.playersList.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-
-        viewModel.getList().observe(this, Observer { it ->
-            parentPlayersAdapter.submitList(it)
-        })
+//        childPointsAdapter = ChildPointsAdapter()
+//        parentPlayersAdapter = ParentPlayersAdapter()
+//
+//        binding.playersList.adapter = parentPlayersAdapter
+//        binding.playersList.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+//
+//        viewModel.getList()
+//        viewModel.playersList.observe(this, Observer { it ->
+//            parentPlayersAdapter.submitList(it)
+//        })
     }
 
     override fun addPlayerNameToCurrentMatch(name: String) {

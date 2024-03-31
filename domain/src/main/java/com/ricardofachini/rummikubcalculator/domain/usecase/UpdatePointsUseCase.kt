@@ -7,7 +7,7 @@ class UpdatePointsUseCase @Inject constructor(
     private val repositoryInterface: PlayerLocalRepositoryInterface
 ) {
 
-    suspend fun update(points: Int, playerID: Int): Long {
+    suspend fun update(points: Int, playerID: Int): Boolean {
         return repositoryInterface.updatePoints(playerID, points)
     }
 }

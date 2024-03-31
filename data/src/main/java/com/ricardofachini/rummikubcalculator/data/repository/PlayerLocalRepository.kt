@@ -4,6 +4,9 @@ import com.ricardofachini.rummikubcalculator.data.local.AppDatabase
 import com.ricardofachini.rummikubcalculator.data.local.entity.PlayerEntityLocal
 import com.ricardofachini.rummikubcalculator.domain.model.Player
 import com.ricardofachini.rummikubcalculator.domain.repository.PlayerLocalRepositoryInterface
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -12,19 +15,29 @@ class PlayerLocalRepository @Inject constructor(
     private val database: AppDatabase
 ): PlayerLocalRepositoryInterface {
 
-    override suspend fun getAllPlayers(): List<Player> {
-        return database.playerDao().getAll().map {
-            it.toDomain()
+    override fun getAllPlayers(): Flow<List<Player>> {
+        val teste = database.playerDao().getAll()
+        println("teste = $teste")
+        return database.playerDao().getAll().map { data ->
+            println("player from dao: $data")
+            data.map {entity ->
+                entity.toDomain()
+            }
         }
     }
 
-    override suspend fun updatePoints(playerID: Int, points: Int): Long {
-        TODO("Not yet implemented")
+    override suspend fun updatePoints(playerID: Int, points: Int): Boolean {
+        return try {
+            database.playerDao().updatePlayer(playerID, points)
+            true
+        }   catch (error: Throwable) {
+            false
+        }
     }
 
     override suspend fun addPlayer(player: Player): Boolean {
         return try {
-            database.playerDao().insertPlayer(player = player.toData())
+            database.playerDao().insertPlayer(player.toData())
             true
         } catch (error: Throwable) {
             println("erro: $error")
@@ -44,7 +57,7 @@ class PlayerLocalRepository @Inject constructor(
         return PlayerEntityLocal(
             id = id,
             name = name,
-            points = points
+            points = points.toList()
         )
     }
 

@@ -10,6 +10,9 @@ import com.ricardofachini.rummikubcalculator.domain.usecase.AddPlayerUseCase
 import com.ricardofachini.rummikubcalculator.domain.usecase.GetAllPlayersUseCase
 import com.ricardofachini.rummikubcalculator.domain.usecase.UpdatePointsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -20,54 +23,39 @@ class MatchViewModel @Inject constructor(
     private val updatePointsUseCase: UpdatePointsUseCase,
 ):  ViewModel() {
 
-//    private val currentMatch = Match(
-//        id = -1,
-//        players = MutableList(1),
-//        maxNumberOfPoints = 2,
-//        winner = null,
-//    )
-
-//    private val lista = mutableListOf(
-//        Player(0, "nome1", mutableListOf(1, 2, 3)),
-//        Player(1, "nome2", mutableListOf(-15, 25, 35)),
-//        Player(2, "nome1", mutableListOf(12, 22, -31))
-//    )
-    val lista: MutableLiveData<List<Player>> by lazy {
-        MutableLiveData<List<Player>>()
-    }
+    val playersList = MutableLiveData<List<Player>>()
 
 
-    fun getList(): LiveData<List<Player>> {
-        val result = MutableLiveData<List<Player>>()
-        viewModelScope.launch {
-            val list = getAllPlayersUseCase.getAllPlayersFromLocal()
-            result.postValue(list)
-        }
-        return result
+    fun getList() {
+        getAllPlayersUseCase.getAllPlayersFromLocal().onEach { data ->
+            this.playersList.value = data
+        }.launchIn(viewModelScope)
     }
 
     fun getPlayerFromId(playerId: Int): Player? {
         var player: Player? = null
         viewModelScope.launch {
-            player = getAllPlayersUseCase.getAllPlayersFromLocal().find {
-                    id -> playerId.equals(id)
+            getAllPlayersUseCase.getAllPlayersFromLocal().onEach { data ->
+                player = data.find { id ->
+                    playerId.equals(id)
+                }
             }
         }
+        println(" ----- Player encontrado:  $player ------")
         return player
     }
 
-    fun updatePoints(points: Int, playerId: Int): LiveData<List<Player>> {
+    fun updatePoints(points: Int, playerId: Int) {
         viewModelScope.launch {
             updatePointsUseCase.update(points, playerId)
         }
-        return getList()
     }
 
     fun addNewPlayer(name: String) {
         val player = Player(
             id = 0,
             name = name,
-            mutableListOf()
+            mutableListOf(0)
         )
         //lista.add(player)
         viewModelScope.launch {
@@ -79,7 +67,4 @@ class MatchViewModel @Inject constructor(
         }
     }
 
-    fun observe() {
-
-    }
 }
